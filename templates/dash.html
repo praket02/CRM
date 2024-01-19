@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="UTF-8">
+        <title> CRM Dashboard </title>
+
+        <!-- Link to the external CSS file -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dash.css') }}"> 
+
+        <!-- Link to the external JavaScript file -->
+        <script src="{{ url_for('static', filename = 'dash.js') }}"></script>
+    </head>
+    <body>
+        <div>
+            <h1>CRM</h1>   
+        </div>
+        
+        <div>
+            <!-- Check if there are no complaints -->
+            {% if complaints|length == 0 %}
+            <h2 style="text-align: center;"> No complaints found. </h2>
+            
+            <div class="new-complaint" style="text-align: center;">
+                <a href="{{ url_for('new_complaint') }}">New Complaint</a>
+            </div>
+            {% else %}
+            <div id="tabs">
+                <div onclick="show_table('all');">ALL</div>
+                <div onclick="show_table('open');">OPEN</div>
+                <div onclick="show_table('closed');">CLOSED</div>
+            </div>
+            <div>
+                <div id="complaints_data-all" style="display:none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th> Complaint ID </th>
+                                <th> Customer Name </th>
+                                <th> Mobile </th>
+                                <th> Address </th>
+                                <th> Status </th>
+                                <th colspan=2> Actions </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop through all complaints -->
+                            {% for complaint in complaints %}
+                            <tr>
+                                {% for x in complaint.values() %}
+                                <td> {{ x }} </td>
+                                {% endfor %}
+        
+                                {% if complaint.status == "CLOSED" %}
+                                <td colspan=2><a href="{{ url_for('modify_complaint', complaint_id=complaint.complaint_id) }}">Modify</a></td>
+                                {% else %}
+                                <td style="text-align: center;"><a href="{{ url_for('modify_complaint', complaint_id=complaint.complaint_id) }}">Modify</a></td>
+                                <td style="text-align: center;"><a onclick="close_complaint('{{complaint.complaint_id}}')">Close</a></td>
+                                {% endif %}
+        
+                            </tr>
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="complaints_data-open" style="display:none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th> Complaint ID </th>
+                                <th> Customer Name </th>
+                                <th> Mobile </th>
+                                <th> Address </th>
+                                <th> Status </th>
+                                <th colspan=2> Actions </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for complaint in complaints %}
+                            {% if complaint.status == "OPEN" %}
+                            <tr>
+                                {% for x in complaint.values() %}
+                                <td> {{ x }} </td>
+                                {% endfor %}
+        
+                                <td style="text-align: center;"><a href="{{ url_for('modify_complaint', complaint_id=complaint.complaint_id) }}">Modify</a></td>
+                                <td style="text-align: center;"><a onclick="close_complaint('{{complaint.complaint_id}}')">Close</a></td>
+                    
+                            </tr>
+                            {% endif %}
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="complaints_data-closed" style="display:none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th> Complaint ID </th>
+                                <th> Customer Name </th>
+                                <th> Mobile </th>
+                                <th> Address </th>
+                                <th> Status </th>
+                                <th> Actions </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for complaint in complaints %}
+                            {% if complaint.status == "CLOSED" %}
+                            <tr>
+                                {% for x in complaint.values() %}
+                                <td> {{ x }} </td>
+                                {% endfor %}
+
+                                <td><a href="{{ url_for('modify_complaint', complaint_id=complaint.complaint_id) }}">Modify</a></td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+
+                <div class="new-complaint">
+                    <a href="{{ url_for('new_complaint') }}">New Complaint</a>
+                </div>
+
+            </div>
+            {% endif %}
+        </div>
+
+
+        
+    </body>
+</html>

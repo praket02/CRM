@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="UTF-8">
+        
+        <title> New Complaint </title>
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='new_complaint.css') }}"> 
+    </head>
+    <body>
+        <div>
+            <h1> CRM </h1> 
+        </div>
+
+        <div>
+            <form method="POST" action="{{ url_for('new_complaint') }}">
+                <h2 style="text-align: center; margin-top: 0px;"> New Complaint </h2>
+                
+                <div>
+                    <label for="cust_name"> Customer Name: </label>
+                    <input type="text" name="customer_name" id="cust_name" required/>
+                </div>
+                <br>
+                
+                <div>
+                    <label for="phone"> Mobile Number: </label>
+                    <input type="tel" pattern="[1-9][\d]{9}" name="phone_number" id="phone" placeholder="10 digit Mobile number" required/>
+                </div>
+                <br>
+
+                <div>
+                    <label for="addr"> Address: </label>
+                    <input type="text" name="address" id="addr" required/>
+                </div>
+                <br>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 5px">
+                    <input type="submit" value="Register"/>
+                    <input type="reset" value="Clear Fields"/>    
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="{{ url_for('dash') }}"> Go to dashboard </a>
+                </div>
+
+            </form>
+        </div>
+    </body>
+</html>
